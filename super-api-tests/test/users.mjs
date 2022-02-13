@@ -39,29 +39,20 @@ describe("Users", () => {
     });
   });
 
-  it.skip('should')`POST /users`, (done) => {
-    let datas = [];
-
-    for (var i = 11; i <= 20; i++) {
-      const data = {
-        email: `user${i}@example.com`,
-        name: `user${i}`,
-        gender: "male",
-        status: "inactive",
-      };
-      datas.push(data);
-    }
-
-    datas.forEach((d) => {
-      return request
-        .post(`users`)
-        .set("Authorization", "Bearer " + TOKEN)
-        .send(d)
-        .then((res) => {
-          console.log(res.body);
-          expect(res.body.data).to.not.be.empty;
-        });
-    });
-    done();
+  it(`POST /users generating users in bulk using post call`, () => {
+    const data = {
+      email: `user${Math.floor(Math.random() * 10000)}@example.com`,
+      name: `user-${Math.floor(Math.random() * 10000)}`,
+      gender: "male",
+      status: "inactive",
+    };
+    return request
+      .post(`users`)
+      .set("Authorization", "Bearer " + TOKEN)
+      .send(data)
+      .then((res) => {
+        expect(res.body.data).to.not.be.empty;
+        expect(res.body.data).to.deep.include(data);
+      });
   });
 });
