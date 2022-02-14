@@ -55,4 +55,30 @@ describe("Users", () => {
         expect(res.body.data).to.deep.include(data);
       });
   });
+
+  it(`put / users: id`, () => {
+    const data = {
+      status: "active",
+      name: `test-user-${Math.floor(Math.random() * 9999)}`,
+    };
+
+    return request
+      .put(`/users/66`)
+      .set("Authorization", "Bearer " + TOKEN)
+      .send(data)
+      .then((res) => {
+        console.log(res.body.data);
+        expect(res.body.data).to.deep.include(data);
+      });
+  });
+
+  it(`delete /users/:id`, () => {
+    return request
+      .delete(`/users/66`)
+      .set("Authorization", "Bearer " + TOKEN)
+      .then((res) => {
+        console.log(res.body.data);
+        expect(res.body.data).to.be.eq(null);
+      });
+  });
 });
