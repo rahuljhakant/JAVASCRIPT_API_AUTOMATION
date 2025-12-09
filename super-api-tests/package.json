@@ -1,15 +1,86 @@
 {
   "name": "super-api-tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "Comprehensive JavaScript API Automation Study Material - From Beginner to Pro",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:beginner": "mocha '01-beginner/**/*.mjs'",
+    "test:design-patterns": "mocha '02.5-design-patterns/**/*.mjs'",
+    "test:intermediate": "mocha '02-intermediate/**/*.mjs'",
+    "test:advanced": "mocha '03-advanced/**/*.mjs'",
+    "test:professional": "mocha '04-professional/**/*.mjs'",
+    "test:expert": "mocha '05-expert/**/*.mjs'",
+    "test:parallel": "mocha --parallel",
+    "test:watch": "mocha --watch",
+    "test:coverage": "nyc mocha",
+    "test:docker": "docker-compose up --abort-on-container-exit",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "docs:generate": "jsdoc -c jsdoc.conf.json",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "api-testing",
+    "javascript",
+    "automation",
+    "testing",
+    "mocha",
+    "chai",
+    "supertest",
+    "design-patterns",
+    "docker",
+    "jenkins",
+    "allure",
+    "ci-cd"
+  ],
+  "author": "API Automation Learning Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "request": "^2.88.2",
+    "node-fetch": "^3.3.2",
+    "winston": "^3.11.0",
+    "pino": "^8.16.2",
+    "bunyan": "^1.8.15",
+    "elasticsearch": "^16.7.3",
+    "prometheus-api-metrics": "^3.2.2",
+    "sharp": "^0.32.6",
+    "canvas": "^2.11.2",
+    "pixelmatch": "^5.3.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "joi": "^17.11.0",
+    "faker": "^6.6.6",
+    "moment": "^2.29.4",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.1",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "redis": "^4.6.10",
+    "mongoose": "^8.0.0",
+    "mysql2": "^3.6.5",
+    "pg": "^8.11.3",
+    "sqlite3": "^5.1.6",
+    "cheerio": "^1.0.0-rc.12",
+    "jsdom": "^23.0.1",
+    "form-data": "^4.0.0",
+    "multer": "^1.4.5-lts.1",
+    "compression": "^1.7.4",
+    "rate-limiter-flexible": "^4.0.1",
+    "node-cron": "^3.0.3",
+    "ws": "^8.14.2",
+    "socket.io": "^4.7.4"
+  },
   "devDependencies": {
     "@babel/cli": "^7.27.0",
     "@babel/core": "^7.26.10",
@@ -18,6 +89,66 @@
     "@babel/register": "^7.25.9",
     "chai": "^5.2.0",
     "mocha": "^11.1.0",
-    "supertest": "^7.1.0"
+    "supertest": "^7.1.0",
+    "allure-mocha": "^2.0.0",
+    "allure-commandline": "^2.24.1",
+    "mochawesome": "^7.1.3",
+    "cucumber": "^9.2.0",
+    "playwright": "^1.40.0",
+    "puppeteer": "^21.5.0",
+    "nyc": "^15.1.0",
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "prettier": "^3.1.0",
+    "jsdoc": "^4.0.2",
+    "nodemon": "^3.0.2",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.7.0",
+    "k6": "^0.0.0",
+    "artillery": "^2.0.0",
+    "autocannon": "^7.12.0",
+    "clinic": "^12.0.0",
+    "0x": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/javascript-api-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/javascript-api-automation/issues"
+  },
+  "homepage": "https://github.com/your-username/javascript-api-automation#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }

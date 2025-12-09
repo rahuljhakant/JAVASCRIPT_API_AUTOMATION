@@ -1,0 +1,458 @@
+# GitLab CI/CD Pipeline for JavaScript API Automation
+# Advanced pipeline with comprehensive testing and deployment
+
+stages:
+  - quality
+  - test
+  - security
+  - performance
+  - build
+  - deploy
+  - monitor
+
+variables:
+  NODE_VERSION: "18"
+  DOCKER_REGISTRY: "registry.gitlab.com"
+  IMAGE_NAME: "$CI_REGISTRY_IMAGE"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# Cache configuration
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules/
+    - .npm/
+    - coverage/
+    - allure-results/
+
+# Services
+services:
+  - docker:dind
+  - postgres:13
+  - redis:7
+  - elasticsearch:7.17.10
+
+# Code Quality Stage
+code_quality:
+  stage: quality
+  image: node:18-alpine
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run lint
+    - npm run format -- --check
+    - npm run type-check
+    - npm audit --audit-level=moderate
+  artifacts:
+    reports:
+      junit: test-results/quality-*.xml
+    paths:
+      - coverage/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# SonarQube Analysis
+sonar_analysis:
+  stage: quality
+  image: sonarqube:latest
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: 0
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+        -Dsonar.projectKey=$CI_PROJECT_NAME
+        -Dsonar.sources=.
+        -Dsonar.host.url=$SONAR_HOST_URL
+        -Dsonar.login=$SONAR_TOKEN
+        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+        -Dsonar.testExecutionReportPaths=test-results/*.xml
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Unit Tests
+unit_tests:
+  stage: test
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+  script:
+    - npm run test:unit
+    - npm run test:coverage
+  coverage: '/Lines\s*:\s*(\d+\.\d+)%/'
+  artifacts:
+    reports:
+      junit: test-results/unit-*.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Integration Tests
+integration_tests:
+  stage: test
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+    - elasticsearch:7.17.10
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+    ELASTICSEARCH_URL: http://elasticsearch:9200
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+    - npm run es:setup
+  script:
+    - npm run test:integration
+  artifacts:
+    reports:
+      junit: test-results/integration-*.xml
+    paths:
+      - test-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Contract Tests
+contract_tests:
+  stage: test
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+  script:
+    - npm run test:contract
+  artifacts:
+    reports:
+      junit: test-results/contract-*.xml
+    paths:
+      - test-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Security Tests
+security_tests:
+  stage: security
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+  script:
+    - npm run test:security
+    - npm audit --audit-level=high
+  artifacts:
+    reports:
+      junit: test-results/security-*.xml
+    paths:
+      - security-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Performance Tests
+performance_tests:
+  stage: performance
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+  script:
+    - npm run test:performance
+    - npm run test:load
+    - npm run test:stress
+  artifacts:
+    reports:
+      junit: test-results/performance-*.xml
+    paths:
+      - performance-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Cross-Browser Tests
+cross_browser_tests:
+  stage: performance
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+    - npx playwright install --with-deps
+  script:
+    - npm run test:cross-browser
+  artifacts:
+    reports:
+      junit: test-results/cross-browser-*.xml
+    paths:
+      - cross-browser-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Mutation Tests
+mutation_tests:
+  stage: performance
+  image: node:18-alpine
+  services:
+    - postgres:13
+    - redis:7
+  variables:
+    POSTGRES_DB: test_db
+    POSTGRES_USER: test_user
+    POSTGRES_PASSWORD: test_password
+    REDIS_URL: redis://redis:6379
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run db:migrate
+    - npm run db:seed
+  script:
+    - npm run test:mutation
+  artifacts:
+    reports:
+      junit: test-results/mutation-*.xml
+    paths:
+      - mutation-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Build Docker Image
+build_image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+    - docker push $IMAGE_NAME:latest
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Security Scan
+security_scan:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+        -v $(pwd):/workspace
+        aquasec/trivy image --format json --output trivy-results.json $IMAGE_NAME:$CI_COMMIT_SHA
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+        -v $(pwd):/workspace
+        aquasec/trivy image --format table $IMAGE_NAME:$CI_COMMIT_SHA
+  artifacts:
+    reports:
+      junit: test-results/security-scan-*.xml
+    paths:
+      - trivy-results.json
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+# Deploy to Staging
+deploy_staging:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  environment:
+    name: staging
+    url: https://staging.example.com
+  before_script:
+    - echo "$KUBECONFIG_STAGING" | base64 -d > kubeconfig
+    - export KUBECONFIG=kubeconfig
+  script:
+    - kubectl config use-context staging
+    - kubectl apply -f k8s/staging/
+    - kubectl set image deployment/api-automation api-automation=$IMAGE_NAME:$CI_COMMIT_SHA
+    - kubectl rollout status deployment/api-automation
+  only:
+    - develop
+  when: manual
+
+# Staging Tests
+staging_tests:
+  stage: deploy
+  image: node:18-alpine
+  environment:
+    name: staging
+    url: https://staging.example.com
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run test:smoke -- --env=staging
+    - npm run test:health -- --env=staging
+    - npm run test:api -- --env=staging
+  artifacts:
+    reports:
+      junit: test-results/staging-*.xml
+    paths:
+      - test-results/
+    expire_in: 1 week
+  only:
+    - develop
+  when: manual
+
+# Deploy to Production
+deploy_production:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  environment:
+    name: production
+    url: https://production.example.com
+  before_script:
+    - echo "$KUBECONFIG_PRODUCTION" | base64 -d > kubeconfig
+    - export KUBECONFIG=kubeconfig
+  script:
+    - kubectl config use-context production
+    - kubectl apply -f k8s/production/
+    - kubectl set image deployment/api-automation api-automation=$IMAGE_NAME:$CI_COMMIT_SHA
+    - kubectl rollout status deployment/api-automation
+  only:
+    - main
+  when: manual
+
+# Production Tests
+production_tests:
+  stage: deploy
+  image: node:18-alpine
+  environment:
+    name: production
+    url: https://production.example.com
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run test:smoke -- --env=production
+    - npm run test:health -- --env=production
+    - npm run test:monitoring -- --env=production
+  artifacts:
+    reports:
+      junit: test-results/production-*.xml
+    paths:
+      - test-results/
+    expire_in: 1 week
+  only:
+    - main
+  when: manual
+
+# Post-Deployment Monitoring
+post_deployment_monitoring:
+  stage: monitor
+  image: node:18-alpine
+  environment:
+    name: production
+    url: https://production.example.com
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  script:
+    - npm run test:monitoring -- --env=production
+    - npm run generate:deployment-report
+  artifacts:
+    reports:
+      junit: test-results/monitoring-*.xml
+    paths:
+      - deployment-report/
+    expire_in: 1 week
+  only:
+    - main
+  when: manual
+
+# Cleanup
+cleanup:
+  stage: monitor
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker system prune -f
+    - docker image prune -f
+  only:
+    - main
+  when: manual
+
+
+
