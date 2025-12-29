@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * *' # Daily
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        cd super-api-tests
+        npm ci
+    
+    - name: Run all tests
+      run: |
+        cd super-api-tests
+        npm test
+    
+    - name: Run beginner tests
+      run: |
+        cd super-api-tests
+        npm run test:beginner
+    
+    - name: Run intermediate tests
+      run: |
+        cd super-api-tests
+        npm run test:intermediate
+

@@ -1,0 +1,35 @@
+{
+  "loadTest": {
+    "duration": 300,
+    "rampUp": 60,
+    "targetUsers": 100,
+    "thinkTime": 2
+  },
+  "stressTest": {
+    "duration": 600,
+    "rampUp": 120,
+    "targetUsers": 500,
+    "thinkTime": 1
+  },
+  "spikeTest": {
+    "duration": 180,
+    "rampUp": 10,
+    "targetUsers": 1000,
+    "thinkTime": 0.5
+  },
+  "enduranceTest": {
+    "duration": 3600,
+    "rampUp": 300,
+    "targetUsers": 50,
+    "thinkTime": 5
+  },
+  "thresholds": {
+    "responseTime": {
+      "p95": 2000,
+      "p99": 5000
+    },
+    "errorRate": 1,
+    "throughput": 100
+  }
+}
+

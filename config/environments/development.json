@@ -6,7 +6,7 @@
     "retryDelay": 1000
   },
   "auth": {
-    "token": "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c",
+    "token": "${API_TOKEN}",
     "tokenType": "Bearer"
   },
   "testing": {

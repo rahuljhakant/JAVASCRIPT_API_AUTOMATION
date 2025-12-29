@@ -12,6 +12,7 @@
 
 import { expect } from "chai";
 import supertest from "supertest";
+import { getApiToken } from "../../../utils/env-loader.mjs";
 
 console.log("=== AI-POWERED TEST CASE GENERATION ===");
 
@@ -508,7 +509,9 @@ class IntelligentTestSelector {
 
 // API client for AI testing
 const request = supertest("https://gorest.co.in/public-api/");
-const TOKEN = "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c";
+import dotenv from "dotenv";
+dotenv.config();
+const TOKEN = process.env.GOREST_API_TOKEN || process.env.API_TOKEN || "";
 
 // Exercises and Tests
 describe("AI-Powered Test Case Generation", () => {

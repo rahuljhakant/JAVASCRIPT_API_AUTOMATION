@@ -1,0 +1,29 @@
+{
+  "name": "testing",
+  "api": {
+    "baseUrl": "https://test-api.example.com",
+    "timeout": 15000,
+    "retries": 1
+  },
+  "database": {
+    "host": "test-db.example.com",
+    "port": 5432,
+    "name": "api_automation_test",
+    "ssl": false
+  },
+  "logging": {
+    "level": "debug",
+    "file": "logs/testing.log"
+  },
+  "features": {
+    "enableCache": false,
+    "enableMetrics": true,
+    "enableTracing": false
+  },
+  "test": {
+    "cleanupAfterTests": true,
+    "useMockData": true,
+    "parallelExecution": true
+  }
+}
+

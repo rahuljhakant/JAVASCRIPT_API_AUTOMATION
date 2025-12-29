@@ -1,0 +1,70 @@
+{
+  "name": "javascript-api-automation",
+  "version": "1.0.0",
+  "description": "Comprehensive JavaScript API Automation Study Material - From Beginner to Expert",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "super-api-tests"
+  ],
+  "scripts": {
+    "test": "npm run test --workspace=super-api-tests",
+    "test:beginner": "npm run test:beginner --workspace=super-api-tests",
+    "test:design-patterns": "npm run test:design-patterns --workspace=super-api-tests",
+    "test:intermediate": "npm run test:intermediate --workspace=super-api-tests",
+    "test:advanced": "npm run test:advanced --workspace=super-api-tests",
+    "test:professional": "npm run test:professional --workspace=super-api-tests",
+    "test:expert": "npm run test:expert --workspace=super-api-tests",
+    "test:smoke": "npm run test:smoke --workspace=super-api-tests",
+    "test:health": "npm run test:health --workspace=super-api-tests",
+    "test:api": "npm run test:api --workspace=super-api-tests",
+    "test:security": "npm run test:security --workspace=super-api-tests",
+    "test:parallel": "npm run test:parallel --workspace=super-api-tests",
+    "test:coverage": "npm run test:coverage --workspace=super-api-tests",
+    "lint": "npm run lint --workspace=super-api-tests",
+    "lint:fix": "npm run lint:fix --workspace=super-api-tests",
+    "format": "npm run format --workspace=super-api-tests",
+    "format:check": "prettier --check .",
+    "allure:generate": "npm run allure:generate --workspace=super-api-tests",
+    "allure:open": "npm run allure:open --workspace=super-api-tests",
+    "allure:serve": "npm run allure:serve --workspace=super-api-tests",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "setup": "node scripts/setup.js"
+  },
+  "keywords": [
+    "api-testing",
+    "javascript",
+    "automation",
+    "testing",
+    "mocha",
+    "chai",
+    "supertest",
+    "design-patterns",
+    "docker",
+    "jenkins",
+    "allure",
+    "ci-cd",
+    "learning",
+    "tutorial"
+  ],
+  "author": "API Automation Learning Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/javascript-api-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/javascript-api-automation/issues"
+  },
+  "homepage": "https://github.com/your-username/javascript-api-automation#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0"
+  }
+}
+

@@ -12,12 +12,17 @@
 
 import { expect } from "chai";
 import supertest from "supertest";
+import { getApiToken } from "../../../utils/env-loader.mjs";
 
 console.log("=== CREATE USER (POST) OPERATIONS ===");
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 // API client setup
 const request = supertest("https://gorest.co.in/public-api/");
-const TOKEN = "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c";
+const TOKEN = getApiToken();
 
 // User data generator
 class UserDataGenerator {

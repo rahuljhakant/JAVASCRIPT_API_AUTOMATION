@@ -1,0 +1,38 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        cd super-api-tests
+        npm ci
+    
+    - name: Run tests
+      run: |
+        cd super-api-tests
+        npm test
+    
+    - name: Build Docker image
+      run: docker build -t api-automation:${{ github.sha }} .
+    
+    - name: Run Docker container
+      run: docker-compose up -d
+

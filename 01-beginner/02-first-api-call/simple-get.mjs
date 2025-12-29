@@ -201,6 +201,5 @@ describe("Performance Analysis", () => {
 // Export functions for reuse
 export { 
   makeSimpleGetRequest, 
-  analyzeResponse,
-  StatusCodeHelper 
+  analyzeResponse
 };

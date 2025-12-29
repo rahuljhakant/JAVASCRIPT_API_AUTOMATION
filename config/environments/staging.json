@@ -1,0 +1,43 @@
+{
+  "api": {
+    "baseUrl": "https://api-staging.example.com/",
+    "timeout": 15000,
+    "retries": 3,
+    "retryDelay": 2000
+  },
+  "auth": {
+    "token": "${API_TOKEN}",
+    "tokenType": "Bearer"
+  },
+  "testing": {
+    "parallel": true,
+    "maxConcurrency": 3,
+    "timeout": 60000,
+    "retries": 3
+  },
+  "reporting": {
+    "allure": {
+      "enabled": true,
+      "resultsDir": "allure-results",
+      "reportDir": "allure-report"
+    },
+    "screenshots": {
+      "enabled": true,
+      "dir": "screenshots",
+      "onFailure": true
+    }
+  },
+  "logging": {
+    "level": "debug",
+    "format": "json",
+    "output": "console"
+  },
+  "performance": {
+    "thresholds": {
+      "responseTime": 3000,
+      "throughput": 5,
+      "errorRate": 3
+    }
+  }
+}
+

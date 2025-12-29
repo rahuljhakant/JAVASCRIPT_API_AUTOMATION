@@ -1,0 +1,43 @@
+{
+  "api": {
+    "baseUrl": "https://api.example.com/",
+    "timeout": 20000,
+    "retries": 5,
+    "retryDelay": 3000
+  },
+  "auth": {
+    "token": "${API_TOKEN}",
+    "tokenType": "Bearer"
+  },
+  "testing": {
+    "parallel": false,
+    "maxConcurrency": 2,
+    "timeout": 120000,
+    "retries": 5
+  },
+  "reporting": {
+    "allure": {
+      "enabled": true,
+      "resultsDir": "allure-results",
+      "reportDir": "allure-report"
+    },
+    "screenshots": {
+      "enabled": true,
+      "dir": "screenshots",
+      "onFailure": true
+    }
+  },
+  "logging": {
+    "level": "warn",
+    "format": "json",
+    "output": "file"
+  },
+  "performance": {
+    "thresholds": {
+      "responseTime": 5000,
+      "throughput": 3,
+      "errorRate": 1
+    }
+  }
+}
+

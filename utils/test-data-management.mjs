@@ -11,7 +11,7 @@
  */
 
 import { expect } from "chai";
-import faker from "faker";
+import { faker } from "@faker-js/faker";
 
 console.log("=== TEST DATA MANAGEMENT ===");
 
@@ -25,57 +25,57 @@ class TestDataFactory {
   // Setup default data generators
   setupDefaultGenerators() {
     this.generators.set('user', () => ({
-      id: faker.datatype.number({ min: 1, max: 10000 }),
-      name: faker.name.findName(),
+      id: faker.number.int({ min: 1, max: 10000 }),
+      name: faker.person.fullName(),
       email: faker.internet.email(),
       username: faker.internet.userName(),
-      phone: faker.phone.phoneNumber(),
+      phone: faker.phone.number(),
       website: faker.internet.url(),
       address: {
-        street: faker.address.streetAddress(),
-        city: faker.address.city(),
-        zipcode: faker.address.zipCode(),
+        street: faker.location.streetAddress(),
+        city: faker.location.city(),
+        zipcode: faker.location.zipCode(),
         geo: {
-          lat: faker.address.latitude(),
-          lng: faker.address.longitude()
+          lat: faker.location.latitude(),
+          lng: faker.location.longitude()
         }
       },
       company: {
-        name: faker.company.companyName(),
+        name: faker.company.name(),
         catchPhrase: faker.company.catchPhrase(),
-        bs: faker.company.bs()
+        bs: faker.company.buzzPhrase()
       }
     }));
     
     this.generators.set('product', () => ({
-      id: faker.datatype.number({ min: 1, max: 10000 }),
+      id: faker.number.int({ min: 1, max: 10000 }),
       title: faker.commerce.productName(),
       price: parseFloat(faker.commerce.price()),
       description: faker.commerce.productDescription(),
       category: faker.commerce.department(),
-      image: faker.image.imageUrl(),
+      image: faker.image.url(),
       rating: {
-        rate: faker.datatype.float({ min: 0, max: 5, precision: 0.1 }),
-        count: faker.datatype.number({ min: 0, max: 1000 })
+        rate: faker.number.float({ min: 0, max: 5, fractionDigits: 1 }),
+        count: faker.number.int({ min: 0, max: 1000 })
       }
     }));
     
     this.generators.set('order', () => ({
-      id: faker.datatype.number({ min: 1, max: 10000 }),
-      userId: faker.datatype.number({ min: 1, max: 100 }),
+      id: faker.number.int({ min: 1, max: 10000 }),
+      userId: faker.number.int({ min: 1, max: 100 }),
       date: faker.date.recent().toISOString(),
-      products: Array.from({ length: faker.datatype.number({ min: 1, max: 5 }) }, () => ({
-        productId: faker.datatype.number({ min: 1, max: 100 }),
-        quantity: faker.datatype.number({ min: 1, max: 10 })
+      products: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => ({
+        productId: faker.number.int({ min: 1, max: 100 }),
+        quantity: faker.number.int({ min: 1, max: 10 })
       })),
-      total: faker.datatype.float({ min: 10, max: 1000, precision: 0.01 })
+      total: faker.number.float({ min: 10, max: 1000, fractionDigits: 2 })
     }));
     
     this.generators.set('post', () => ({
-      id: faker.datatype.number({ min: 1, max: 10000 }),
+      id: faker.number.int({ min: 1, max: 10000 }),
       title: faker.lorem.sentence(),
       body: faker.lorem.paragraphs(3),
-      userId: faker.datatype.number({ min: 1, max: 100 }),
+      userId: faker.number.int({ min: 1, max: 100 }),
       tags: faker.lorem.words(3).split(' '),
       published: faker.datatype.boolean(),
       createdAt: faker.date.past().toISOString(),
@@ -121,14 +121,14 @@ class TestDataFactory {
     
     for (const [field, constraint] of Object.entries(constraints)) {
       if (constraint.type === 'range') {
-        constrained[field] = faker.datatype.number({
+        constrained[field] = faker.number.int({
           min: constraint.min,
           max: constraint.max
         });
       } else if (constraint.type === 'enum') {
-        constrained[field] = faker.random.arrayElement(constraint.values);
+        constrained[field] = faker.helpers.arrayElement(constraint.values);
       } else if (constraint.type === 'pattern') {
-        constrained[field] = faker.random.alphaNumeric(constraint.length);
+        constrained[field] = faker.string.alphanumeric(constraint.length);
       }
     }
     
@@ -199,16 +199,16 @@ class TestDataBuilder {
   
   // Set phone field
   withPhone(field, phone) {
-    this.overrides[field] = phone || faker.phone.phoneNumber();
+    this.overrides[field] = phone || faker.phone.number();
     return this;
   }
   
   // Set address field
   withAddress(field, address) {
     this.overrides[field] = address || {
-      street: faker.address.streetAddress(),
-      city: faker.address.city(),
-      zipcode: faker.address.zipCode()
+      street: faker.location.streetAddress(),
+      city: faker.location.city(),
+      zipcode: faker.location.zipCode()
     };
     return this;
   }

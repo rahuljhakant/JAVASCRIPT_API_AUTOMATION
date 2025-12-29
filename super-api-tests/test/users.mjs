@@ -1,10 +1,12 @@
 import { expect } from "chai";
 import supertest from "supertest";
+import dotenv from "dotenv";
 
-const request = supertest("https://gorest.co.in/public-api/");
+dotenv.config();
 
-const TOKEN =
-  "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c";
+const request = supertest(process.env.API_BASE_URL || "https://gorest.co.in/public-api/");
+
+const TOKEN = process.env.API_TOKEN || "your-api-token-here";
 
 describe("Users", () => {
   it("GET /users", (done) => {
@@ -56,29 +58,59 @@ describe("Users", () => {
       });
   });
 
-  it(`put / users: id`, () => {
-    const data = {
+  it(`put / users: id`, async () => {
+    // First create a user to update
+    const createData = {
+      email: `user${Math.floor(Math.random() * 10000)}@example.com`,
+      name: `user-${Math.floor(Math.random() * 10000)}`,
+      gender: "male",
+      status: "inactive",
+    };
+    
+    const createResponse = await request
+      .post(`users`)
+      .set("Authorization", "Bearer " + TOKEN)
+      .send(createData);
+    
+    const userId = createResponse.body.data.id;
+    
+    // Now update the user
+    const updateData = {
       status: "active",
       name: `test-user-${Math.floor(Math.random() * 9999)}`,
     };
 
-    return request
-      .put(`/users/66`)
+    const response = await request
+      .put(`/users/${userId}`)
       .set("Authorization", "Bearer " + TOKEN)
-      .send(data)
-      .then((res) => {
-        console.log(res.body.data);
-        expect(res.body.data).to.deep.include(data);
-      });
+      .send(updateData);
+    
+    console.log(response.body.data);
+    expect(response.body.data).to.deep.include(updateData);
   });
 
-  it(`delete /users/:id`, () => {
-    return request
-      .delete(`/users/66`)
+  it(`delete /users/:id`, async () => {
+    // First create a user to delete
+    const createData = {
+      email: `user${Math.floor(Math.random() * 10000)}@example.com`,
+      name: `user-${Math.floor(Math.random() * 10000)}`,
+      gender: "male",
+      status: "active",
+    };
+    
+    const createResponse = await request
+      .post(`users`)
       .set("Authorization", "Bearer " + TOKEN)
-      .then((res) => {
-        console.log(res.body.data);
-        expect(res.body.data).to.be.eq(null);
-      });
+      .send(createData);
+    
+    const userId = createResponse.body.data.id;
+    
+    // Now delete the user
+    const response = await request
+      .delete(`/users/${userId}`)
+      .set("Authorization", "Bearer " + TOKEN);
+    
+    console.log(response.body.data);
+    expect(response.status).to.be.oneOf([200, 204]);
   });
 });

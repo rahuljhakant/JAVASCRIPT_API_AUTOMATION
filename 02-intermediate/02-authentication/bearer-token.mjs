@@ -12,6 +12,7 @@
 
 import { expect } from "chai";
 import supertest from "supertest";
+import { getApiToken } from "../../../utils/env-loader.mjs";
 
 console.log("=== BEARER TOKEN AUTHENTICATION ===");
 
@@ -186,7 +187,7 @@ class TokenValidator {
 describe("Bearer Token Authentication", () => {
   let tokenManager;
   let authService;
-  const VALID_TOKEN = "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c";
+  const VALID_TOKEN = getApiToken();
   const INVALID_TOKEN = "invalid-token-12345";
   
   beforeEach(() => {
@@ -233,7 +234,7 @@ describe("Bearer Token Authentication", () => {
   
   it("should validate token format", () => {
     const validTokens = [
-      "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c",
+      getApiToken(),
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
       "123e4567-e89b-12d3-a456-426614174000"
     ];
@@ -359,7 +360,7 @@ describe("Advanced Authentication Scenarios", () => {
   });
   
   it("should handle concurrent authenticated requests", async () => {
-    tokenManager.storeToken('concurrent_token', "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c");
+    tokenManager.storeToken('concurrent_token', getApiToken());
     
     const requests = Array.from({ length: 5 }, () => 
       authService.makeAuthenticatedRequest('GET', '/users', 'concurrent_token')
@@ -374,7 +375,7 @@ describe("Advanced Authentication Scenarios", () => {
   
   it("should handle token rotation", async () => {
     const tokens = [
-      "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c",
+      getApiToken(),
       "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c"
     ];
     
@@ -410,7 +411,7 @@ describe("Advanced Authentication Scenarios", () => {
   });
   
   it("should measure authentication performance", async () => {
-    tokenManager.storeToken('perf_token', "6dc353df7c107b9cf591463edb36e13dbc182be021562024473aac00cd19031c");
+    tokenManager.storeToken('perf_token', getApiToken());
     
     const iterations = 10;
     const times = [];
