@@ -157,10 +157,55 @@ This repository provides a structured learning journey from beginner to expert l
 │       └── enterprise-integration.mjs # Enterprise integration
 │
 ├── 📁 educational_hacking_tutorials/ # Security Testing Tutorials
-│   └── 📁 01_web_application_security/
-│       ├── 01_sql_injection_testing.mjs  # SQL injection testing
-│       ├── 02_xss_testing.mjs            # XSS testing
-│       └── README.md                     # Security testing guide
+│   ├── 📁 01_web_application_security/  # Web app security testing
+│   │   ├── 01_sql_injection_testing.mjs  # SQL injection testing
+│   │   ├── 02_xss_testing.mjs            # XSS testing
+│   │   ├── 03_csrf_testing.mjs           # CSRF testing
+│   │   ├── 04_authentication_bypass.mjs  # Authentication bypass
+│   │   ├── 05_authorization_testing.mjs  # Authorization testing
+│   │   ├── 06_input_validation.mjs      # Input validation
+│   │   └── README.md                     # Security testing guide
+│   ├── 📁 02_network_security/           # Network security fundamentals
+│   │   ├── port-scanning.mjs             # Port scanning
+│   │   ├── 02_protocol_analysis.mjs      # Protocol analysis
+│   │   ├── 03_traffic_analysis.mjs       # Traffic analysis
+│   │   ├── 04_firewall_testing.mjs       # Firewall testing
+│   │   └── 05_ids_ips_testing.mjs        # IDS/IPS testing
+│   ├── 📁 03_penetration_testing/        # Penetration testing methodologies
+│   │   ├── reconnaissance.mjs            # Reconnaissance
+│   │   ├── vulnerability-scanning.mjs    # Vulnerability scanning
+│   │   ├── 03_exploitation.mjs           # Exploitation techniques
+│   │   ├── 04_post_exploitation.mjs      # Post-exploitation
+│   │   └── 05_security_reporting.mjs     # Security reporting
+│   ├── 📁 04_advanced_techniques/         # Advanced exploitation techniques
+│   │   ├── advanced-exploitation.mjs      # Advanced exploitation
+│   │   ├── privilege-escalation.mjs      # Privilege escalation
+│   │   ├── 03_persistence.mjs            # Persistence mechanisms
+│   │   └── 04_evasion.mjs                 # Evasion techniques
+│   └── 📁 05_professional_level/          # Professional security operations
+│       ├── red-team-operations.mjs        # Red team operations
+│       ├── compliance-testing.mjs        # Compliance testing
+│       ├── 03_blue_team_operations.mjs   # Blue team operations
+│       ├── 04_enterprise_security.mjs    # Enterprise security
+│       ├── 📁 advanced_exploit_development/ # Advanced exploit development
+│       │   ├── buffer-overflow.mjs       # Buffer overflow
+│       │   ├── format-string.mjs         # Format string vulnerabilities
+│       │   └── heap-exploitation.mjs      # Heap exploitation
+│       ├── 📁 advanced_network_security/  # Advanced network security
+│       │   ├── network-penetration.mjs    # Network penetration
+│       │   └── wireless-security.mjs      # Wireless security
+│       ├── 📁 advanced_tooling/           # Advanced tooling
+│       │   ├── custom-tools.mjs          # Custom security tools
+│       │   └── automation-frameworks.mjs # Automation frameworks
+│       ├── 📁 advanced_web_app_security/ # Advanced web app security
+│       │   ├── api-security.mjs           # Advanced API security
+│       │   └── graphql-security.mjs       # GraphQL security
+│       ├── 📁 enterprise_penetration_testing/ # Enterprise pentest
+│       │   ├── enterprise-pentest.mjs    # Enterprise-scale testing
+│       │   └── social-engineering.mjs    # Social engineering
+│       └── 📁 red_team_operations/        # Red team operations
+│           ├── advanced-red-team.mjs     # Advanced red team
+│           └── adversary-simulation.mjs  # Adversary simulation
 ├── 📁 config/                        # Configuration files
 ├── 📁 docs/                         # Documentation
 ├── 📁 utils/                        # Utilities and helpers

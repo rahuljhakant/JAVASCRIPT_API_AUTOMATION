@@ -20,6 +20,7 @@
     "test:api": "npm run test:api --workspace=super-api-tests",
     "test:security": "npm run test:security --workspace=super-api-tests",
     "test:parallel": "npm run test:parallel --workspace=super-api-tests",
+    "test:watch": "npm run test:watch --workspace=super-api-tests",
     "test:coverage": "npm run test:coverage --workspace=super-api-tests",
     "lint": "npm run lint --workspace=super-api-tests",
     "lint:fix": "npm run lint:fix --workspace=super-api-tests",
