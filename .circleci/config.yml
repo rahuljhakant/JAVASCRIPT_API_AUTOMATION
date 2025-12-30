@@ -1,0 +1,62 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+
+workflows:
+  test-and-deploy:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              node-version: ["16", "18", "20"]
+      - deploy-staging:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
+      - deploy-production:
+          requires:
+            - deploy-staging
+          filters:
+            branches:
+              only: main
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:${<< matrix.node-version >>}
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run tests
+          command: npm test
+      - run:
+          name: Generate coverage
+          command: npm run coverage
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: coverage
+
+  deploy-staging:
+    docker:
+      - image: cimg/node:18
+    steps:
+      - checkout
+      - run:
+          name: Deploy to staging
+          command: npm run deploy:staging
+
+  deploy-production:
+    docker:
+      - image: cimg/node:18
+    steps:
+      - checkout
+      - run:
+          name: Deploy to production
+          command: npm run deploy:production
+

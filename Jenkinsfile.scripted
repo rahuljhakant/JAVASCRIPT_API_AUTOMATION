@@ -1,0 +1,19 @@
+node {
+    stage('Checkout') {
+        checkout scm
+    }
+    
+    stage('Setup') {
+        sh "npm install"
+    }
+    
+    stage('Test') {
+        sh "npm test"
+    }
+    
+    stage('Publish Results') {
+        publishTestResults testResultsPattern: 'test-results/*.xml'
+        archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+    }
+}
+

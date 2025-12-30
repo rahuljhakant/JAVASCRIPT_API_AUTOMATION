@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+    
+    tools {
+        nodejs 'NodeJS-18'
+    }
+    
+    environment {
+        NODE_ENV = 'test'
+        API_BASE_URL = 'https://gorest.co.in/public-api'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                sh '''npm ci'''
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                sh '''npm test'''
+            }
+        }
+        
+        stage('Generate Reports') {
+            steps {
+                sh '''npm run report'''
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Pipeline execution completed'
+            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+            publishTestResults testResultsPattern: 'test-results/*.xml'
+        }
+        success {
+            echo 'All tests passed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+        }
+    }
+}
+

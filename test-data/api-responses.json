@@ -1,0 +1,62 @@
+{
+  "success_response": {
+    "code": 200,
+    "meta": {
+      "pagination": {
+        "total": 100,
+        "pages": 10,
+        "page": 1,
+        "limit": 10
+      }
+    },
+    "data": [
+      {
+        "id": 1,
+        "name": "Example User",
+        "email": "user@example.com"
+      }
+    ]
+  },
+  "created_response": {
+    "code": 201,
+    "meta": null,
+    "data": {
+      "id": 123,
+      "name": "New User",
+      "email": "newuser@example.com",
+      "created_at": "2024-01-20T10:00:00Z"
+    }
+  },
+  "error_response": {
+    "code": 422,
+    "meta": null,
+    "data": [
+      {
+        "field": "email",
+        "message": "has already been taken"
+      }
+    ]
+  },
+  "not_found_response": {
+    "code": 404,
+    "meta": null,
+    "data": {
+      "message": "Resource not found"
+    }
+  },
+  "unauthorized_response": {
+    "code": 401,
+    "meta": null,
+    "data": {
+      "message": "Authentication failed"
+    }
+  },
+  "forbidden_response": {
+    "code": 403,
+    "meta": null,
+    "data": {
+      "message": "Access denied"
+    }
+  }
+}
+

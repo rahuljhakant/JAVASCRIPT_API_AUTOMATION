@@ -49,19 +49,26 @@
     "learning",
     "tutorial"
   ],
-  "author": "API Automation Learning Team",
+  "author": "Rahul Kant Jha <rahulkantjha@hotmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/javascript-api-automation.git"
+    "url": "git+https://github.com/rahulkantjha/JAVASCRIPT_API_AUTOMATION.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/javascript-api-automation/issues"
+    "url": "https://github.com/rahulkantjha/JAVASCRIPT_API_AUTOMATION/issues"
   },
-  "homepage": "https://github.com/your-username/javascript-api-automation#readme",
+  "homepage": "https://github.com/rahulkantjha/JAVASCRIPT_API_AUTOMATION#readme",
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "chai": "^4.3.10",
+    "supertest": "^6.3.3",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "prettier": "^3.1.0"

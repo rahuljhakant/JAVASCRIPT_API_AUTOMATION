@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "title": "Getting Started with API Testing",
+    "body": "API testing is an essential skill for modern software development. This tutorial covers the basics of API testing using JavaScript.",
+    "created_at": "2024-01-15T10:30:00Z",
+    "updated_at": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "title": "Advanced Testing Patterns",
+    "body": "Learn about advanced testing patterns including Page Object Model, Data Builder, and Fluent Interface patterns.",
+    "created_at": "2024-01-16T14:20:00Z",
+    "updated_at": "2024-01-16T14:20:00Z"
+  },
+  {
+    "id": 3,
+    "user_id": 2,
+    "title": "Performance Testing Guide",
+    "body": "Comprehensive guide to performance testing including load testing, stress testing, and performance optimization techniques.",
+    "created_at": "2024-01-17T09:15:00Z",
+    "updated_at": "2024-01-17T09:15:00Z"
+  },
+  {
+    "id": 4,
+    "user_id": 2,
+    "title": "Security Testing Best Practices",
+    "body": "Learn about security testing including OWASP Top 10, SQL injection, XSS, and other common vulnerabilities.",
+    "created_at": "2024-01-18T11:45:00Z",
+    "updated_at": "2024-01-18T11:45:00Z"
+  },
+  {
+    "id": 5,
+    "user_id": 3,
+    "title": "CI/CD Integration",
+    "body": "How to integrate API testing into your CI/CD pipeline using Jenkins, GitHub Actions, and other tools.",
+    "created_at": "2024-01-19T16:30:00Z",
+    "updated_at": "2024-01-19T16:30:00Z"
+  }
+]
+

@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Parallel Tests') {
+            parallel {
+                'Unit Tests': {
+                    steps {
+                        sh 'npm run test:unit'
+                    }
+                }
+                'Integration Tests': {
+                    steps {
+                        sh 'npm run test:integration'
+                    }
+                }
+                'E2E Tests': {
+                    steps {
+                        sh 'npm run test:e2e'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+        }
+    }
+}
+

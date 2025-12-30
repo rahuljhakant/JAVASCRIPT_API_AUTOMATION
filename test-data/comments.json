@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "post_id": 1,
+    "name": "Test User 1",
+    "email": "testuser1@example.com",
+    "body": "Great tutorial! Very helpful for beginners.",
+    "created_at": "2024-01-15T11:00:00Z"
+  },
+  {
+    "id": 2,
+    "post_id": 1,
+    "name": "Test User 2",
+    "email": "testuser2@example.com",
+    "body": "Thanks for sharing this comprehensive guide.",
+    "created_at": "2024-01-15T12:30:00Z"
+  },
+  {
+    "id": 3,
+    "post_id": 2,
+    "name": "Test User 3",
+    "email": "testuser3@example.com",
+    "body": "The design patterns section is excellent!",
+    "created_at": "2024-01-16T15:00:00Z"
+  },
+  {
+    "id": 4,
+    "post_id": 3,
+    "name": "Test User 4",
+    "email": "testuser4@example.com",
+    "body": "Performance testing is crucial for production applications.",
+    "created_at": "2024-01-17T10:00:00Z"
+  },
+  {
+    "id": 5,
+    "post_id": 4,
+    "name": "Test User 5",
+    "email": "testuser5@example.com",
+    "body": "Security testing should be part of every development cycle.",
+    "created_at": "2024-01-18T12:00:00Z"
+  }
+]
+

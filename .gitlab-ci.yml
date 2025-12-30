@@ -1,0 +1,55 @@
+stages:
+  - test
+  - deploy-staging
+  - deploy-production
+
+variables:
+  NODE_VERSION: "18"
+
+test:
+  stage: test
+  image: node:${NODE_VERSION}
+  before_script:
+    - npm ci
+  script:
+    - npm test
+    - npm run coverage
+  coverage: '/Lines\s*:\s*\d+.\d+%/'
+  artifacts:
+    reports:
+      junit: test-results/*.xml
+    paths:
+      - coverage/
+      - test-results/
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - develop
+
+deploy-staging:
+  stage: deploy-staging
+  image: node:${NODE_VERSION}
+  script:
+    - echo "Deploying to staging..."
+    - npm run deploy:staging
+  environment:
+    name: staging
+    url: https://staging.example.com
+  only:
+    - main
+  when: manual
+
+deploy-production:
+  stage: deploy-production
+  image: node:${NODE_VERSION}
+  script:
+    - echo "Deploying to production..."
+    - npm run deploy:production
+  environment:
+    name: production
+    url: https://api.example.com
+  only:
+    - main
+  when: manual
+
